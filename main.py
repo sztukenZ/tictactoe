@@ -29,11 +29,12 @@ def check_win():
             print("Column")
             return True
 
-    if BOARD_VALUES[1][1] == BOARD_VALUES[0][0] and BOARD_VALUES[1][1] == BOARD_VALUES[2][2] \
-            or BOARD_VALUES[1][1] == BOARD_VALUES[0][2] and BOARD_VALUES[1][1] == BOARD_VALUES[2][0]:
-        print(f"Winner is player {BOARD_VALUES[1][1]}")
-        print("Accross")
-        return True
+    if BOARD_VALUES[1][1] != " ":
+        if BOARD_VALUES[1][1] == BOARD_VALUES[0][0] and BOARD_VALUES[1][1] == BOARD_VALUES[2][2] \
+                or BOARD_VALUES[1][1] == BOARD_VALUES[0][2] and BOARD_VALUES[1][1] == BOARD_VALUES[2][0]:
+            print(f"Winner is player {BOARD_VALUES[1][1]}")
+            print("Accross")
+            return True
 
 
 def run():
