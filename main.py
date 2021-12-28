@@ -36,6 +36,23 @@ def refresh_board():
     return board
 
 
+def update_board(player):
+    while True:
+        position = input(f"Player {player.turn} enter, which field you want to mark (1-9): ")
+        if int(position) not in range(10):
+            continue
+        else:
+
+            print(POSITIONS_DICT[position])
+            i = POSITIONS_DICT[position][0]
+            j = POSITIONS_DICT[position][1]
+            BOARD_VALUES[i][j] = player.sign
+            board = refresh_board()
+            print(board)
+            flag = check_win()
+            break
+    return flag
+
 def checkList(lst):
     if lst.count(" ") == 0:
         return len(set(lst)) == 1
@@ -70,6 +87,7 @@ def check_win():
 def choose_player():
     choices = ["X", "O", "QUIT"]
     while True:
+        print("Welcome to the Tic Tac Toe game!")
         choice = input("Please choose your sign(type 'X' or 'O') or type 'QUIT' to close the program: ")
         if choice.upper() not in choices:
             continue
@@ -77,68 +95,32 @@ def choose_player():
             if choice.upper() == 'QUIT':
                 break
             else:
-                player1 = Player(choice, 1)
+                player1 = Player(choice.upper(), 1)
                 player1.showInfo()
-                if choice == "X":
+                if choice.upper() == "X":
                     player2 = Player("O", 2)
                     player2.showInfo()
                 else:
                     player2 = Player("X", 2)
                     player2.showInfo()
 
+                print("This is an example board:")
+                print(EXAMPLE_BOARD)
+                print("Now here comes the real board:")
+
+                take_turns(player1, player2)
 
 
-
-
-# def choose_player():
-#
-#     while True:
-#         player_1 = input("Please choose your sign(type 'X' or 'O'): ")
-#         if player_1.upper() == "X":
-#             print("Player 1 will be X, Player 2 will be O")
-#             return player_1.upper()
-#         elif player_1.upper() == "O":
-#             print("Player 1 will be O, Player 2 will be X")
-#             return player_1.upper()
-#         elif player_1.lower() == "quit":
-#             break
-#         else:
-#             print("Please choose between 'X' or 'O'!")
-#
-#
-# def run():
-#
-#     while True:
-#         print("Welcome to the Tic Tac Toe game!")
-#         answer = choose_player()
-#         print(answer)
-#         if answer == "X" or answer == "Y":
-#             print("This is an example board:")
-#             print(EXAMPLE_BOARD)
-#             print("Now here comes the real board:")
-#             board = refresh_board()
-#             print(board)
-#             sign = answer
-#             round = 0
-#             while not check_win():
-#                 position = input("Please enter, which field you want to mark (1-9): ")
-#                 round += 1
-#                 print(round)
-#                 if round % 2 == 0:
-#                     if sign == "O":
-#                         sign = "X"
-#                     elif sign == "X":
-#                         sign = "O"
-#
-#                 print(POSITIONS_DICT[position])
-#                 i = POSITIONS_DICT[position][0]
-#                 j = POSITIONS_DICT[position][1]
-#                 BOARD_VALUES[i][j] = sign
-#                 board = refresh_board()
-#                 print(board)
+def take_turns(player_1, player_2):
+    board = refresh_board()
+    print(board)
+    while not check_win():
+        if update_board(player_1):
+            break
+        if update_board(player_2):
+            break
 
 
 if __name__ == '__main__':
     choose_player()
-    pass
-    # run()
+
