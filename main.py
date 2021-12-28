@@ -1,4 +1,4 @@
-BOARD = '''
+EXAMPLE_BOARD = '''
  1 | 2 | 3
 -----------
  4 | 5 | 6 
@@ -11,24 +11,27 @@ BOARD_VALUES = [[" ", " ", " "],
                 [" ", " ", " "]]
 
 POSITIONS_DICT = {
-    "1": BOARD_VALUES[0][0],
-    "2": BOARD_VALUES[0][1],
-    "3": BOARD_VALUES[0][2],
-    "4": BOARD_VALUES[1][0],
-    "5": BOARD_VALUES[1][1],
-    "6": BOARD_VALUES[1][2],
-    "7": BOARD_VALUES[2][0],
-    "8": BOARD_VALUES[2][1],
-    "9": BOARD_VALUES[2][2]
+    "1": (0,0),
+    "2": (0,1),
+    "3": (0,2),
+    "4": (1,0),
+    "5": (1,1),
+    "6": (1,2),
+    "7": (2,0),
+    "8": (2,1),
+    "9": (2,2)
 }
 
-EMPTY_BOARD = f'''
- {POSITIONS_DICT["1"]} | {POSITIONS_DICT["2"]} | {POSITIONS_DICT["3"]}
------------
- {POSITIONS_DICT["4"]} | {POSITIONS_DICT["5"]} | {POSITIONS_DICT["6"]} 
------------
- {POSITIONS_DICT["7"]} | {POSITIONS_DICT["8"]} | {POSITIONS_DICT["9"]} 
-'''
+
+def refresh_board():
+    board = f'''
+     {BOARD_VALUES[0][0]} | {BOARD_VALUES[0][1]} | {BOARD_VALUES[0][2]}
+    -----------
+     {BOARD_VALUES[1][0]} | {BOARD_VALUES[1][1]} | {BOARD_VALUES[1][2]}
+    -----------
+     {BOARD_VALUES[2][0]} | {BOARD_VALUES[2][1]} | {BOARD_VALUES[2][2]}
+    '''
+    return board
 
 
 def checkList(lst):
@@ -53,7 +56,7 @@ def check_win():
         if BOARD_VALUES[1][1] == BOARD_VALUES[0][0] and BOARD_VALUES[1][1] == BOARD_VALUES[2][2] \
                 or BOARD_VALUES[1][1] == BOARD_VALUES[0][2] and BOARD_VALUES[1][1] == BOARD_VALUES[2][0]:
             print(f"Winner is player {BOARD_VALUES[1][1]}")
-            print("Accross")
+            print("Across")
             return True
 
 
@@ -62,10 +65,10 @@ def choose_player():
     while True:
         player_1 = input("Please choose your sign(type 'X' or 'O'): ")
         if player_1.upper() == "X":
-            print("Player 1 will be X, Player 2 - O")
+            print("Player 1 will be X, Player 2 will be O")
             return player_1.upper()
         elif player_1.upper() == "O":
-            print("Player 1 will be O, Player 2 - X")
+            print("Player 1 will be O, Player 2 will be X")
             return player_1.upper()
         elif player_1.lower() == "quit":
             break
@@ -81,17 +84,29 @@ def run():
         print(answer)
         if answer == "X" or answer == "Y":
             print("This is an example board:")
-            print(BOARD)
+            print(EXAMPLE_BOARD)
             print("Now here comes the real board:")
-            print(EMPTY_BOARD)
+            board = refresh_board()
+            print(board)
+            sign = answer
+            round = 0
             while not check_win():
                 position = input("Please enter, which field you want to mark (1-9): ")
+                round += 1
+                print(round)
+                if round % 2 == 0:
+                    if sign == "O":
+                        sign = "X"
+                    elif sign == "X":
+                        sign = "O"
+
                 print(POSITIONS_DICT[position])
-                POSITIONS_DICT[position] = "X"
-                print(EMPTY_BOARD)
+                i = POSITIONS_DICT[position][0]
+                j = POSITIONS_DICT[position][1]
+                BOARD_VALUES[i][j] = sign
+                board = refresh_board()
+                print(board)
 
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     run()
