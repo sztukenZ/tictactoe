@@ -37,21 +37,31 @@ def refresh_board():
 
 
 def update_board(player):
+    flag = False
     while True:
-        position = input(f"Player {player.turn} enter, which field you want to mark (1-9): ")
+        position = input(f"Player {player.turn} enter, which field you want to mark (1-9)\nor type "
+                         f"'RESTART' to restart the game: ")
+        if position.upper() == "RESTART":
+            flag = True
+            break
         if int(position) not in range(10):
             continue
         else:
 
-            print(POSITIONS_DICT[position])
+            # print(POSITIONS_DICT[position])
             i = POSITIONS_DICT[position][0]
             j = POSITIONS_DICT[position][1]
-            BOARD_VALUES[i][j] = player.sign
+            if BOARD_VALUES[i][j] == " ":
+                BOARD_VALUES[i][j] = player.sign
+            else:
+                print("Hey looser, you just lost your turn!")
+
             board = refresh_board()
             print(board)
             flag = check_win()
             break
     return flag
+
 
 def checkList(lst):
     if lst.count(" ") == 0:
@@ -78,11 +88,13 @@ def check_win():
             print("Across")
             return True
 
+    check_draw()
 
-# TODO 1: Choose player
-# TODO 2: Take turns
-# TODO 3: Quit game
 
+def check_draw():
+    if " " not in BOARD_VALUES:
+        print("It's a draw!")
+        return True
 
 def choose_player():
     choices = ["X", "O", "QUIT"]
