@@ -88,11 +88,15 @@ def check_win():
             print("Across")
             return True
 
-    check_draw()
+    return check_draw()
 
 
 def check_draw():
-    if " " not in BOARD_VALUES:
+    count = 0
+    for item in BOARD_VALUES:
+        if " " not in item:
+            count += 1
+    if count == 3:
         print("It's a draw!")
         return True
 
